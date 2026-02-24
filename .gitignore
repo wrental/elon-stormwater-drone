@@ -1,0 +1,15 @@
+# global
+.vscode/
+Doxyfile
+Doxyfile.bak
+docs/
+
+
+# drone/
+drone/.cache/
+drone/build/
+
+# ctrlr
+ctrlr/.cache/
+ctrlr/build/
+
