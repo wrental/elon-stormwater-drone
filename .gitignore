@@ -8,9 +8,9 @@ docs/
 # drone/
 drone/.cache/
 drone/build/
-drone/managed-components/
+drone/managed_components/
 
 # ctrlr
 ctrlr/.cache/
 ctrlr/build/
-ctrlr/managed-components/
+ctrlr/managed_components/
