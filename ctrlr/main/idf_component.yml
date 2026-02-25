@@ -17,4 +17,4 @@ dependencies:
   waveshare/esp_lora_1121: '*'
   stormwater_lr1121:
     git: https://github.com/wrental/elon-stormwater-drone
-    path: shared_components/
+    path: shared_components/stormwater_lr1121

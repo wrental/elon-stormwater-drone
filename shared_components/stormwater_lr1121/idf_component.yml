@@ -1,4 +1,8 @@
 ## IDF Component Manager Manifest File
+version: "0.0.1"
+description: "shared LoRa component of stormwater drone project"
+url: "https://github.com/wrental/elon-stormwater-drone"
+
 dependencies:
   ## Required IDF version
   idf:
