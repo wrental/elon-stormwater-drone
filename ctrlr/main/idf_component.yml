@@ -14,7 +14,7 @@ dependencies:
   #   # `public` flag doesn't have an effect dependencies of the `main` component.
   #   # All dependencies of `main` are public by default.
   #   public: true
-
   stormwater_lr1121:
     git: https://github.com/wrental/elon-stormwater-drone
     path: shared_components/stormwater_lr1121
+  waveshare/esp_lora_1121: '*'
