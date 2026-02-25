@@ -1,13 +1,14 @@
-/*	name: ctrlr.h
+/*	name: lr11xx_hal.c
  *	date: 02-24-2026
  *	auth: wrental
- *	desc: containts configuration information for controller electronics
+ *	desc: HAL implementation for LR11XX driver
  */
 
 /*!
- * @file ctrlr.h
+ * @file lr11xx_hal.c
  *
- * @brief contains configuration information for stormwater drone controller electronics
+ * @brief HAL implementation for LR11XX driver
+
  *
  * @copyright
  * Stormwater Drone Controller for Elon University SPEED 2025-2026
@@ -29,30 +30,4 @@
  *
  */
 
-#ifndef CTRLR_H
-#define CTRLR_H
-
-/*!
- * @brief controller ESP32 pinout definition
- */
-#define BTN_SPOOL			(GPIO_NUM_1)
-#define BTN_PUMP			(GPIO_NUM_2)
-#define BTN_DATA			(GPIO_NUM_3)
-#define LED_SPOOL			(GPIO_NUM_4)
-#define LED_PUMP			(GPIO_NUM_5)
-#define LED_DATA			(GPIO_NUM_6)
-#define LR1121_INT		(GPIO_NUM_12)
-#define LR1121_BUSY 	(GPIO_NUM_13)
-#define LR1121_RESET	(GPIO_NUM_14)
-#define LR1121_MISO		(GPIO_NUM_15)
-#define LR1121_MOSI		(GPIO_NUM_16)
-#define LR1121_CLK		(GPIO_NUM_17)
-#define LR1121_CS			(GPIO_NUM_18)
-
-/*!
- * @brief controller ESP32 SPI configuration for LR1121
- */
-#define LR1121_SPI_HOST		(SPI2_HOST)
-#define LR1121_SPI_CLK_HZ	8 * 1000 * 1000 // 8MHz
-
-#endif
+#include "lr11xx_hal.h"

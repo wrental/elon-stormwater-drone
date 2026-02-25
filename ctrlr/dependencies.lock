@@ -1,34 +1,19 @@
 dependencies:
+  LR11XX_driver:
+    component_hash: d490d7b7de67531dcbd56f7e0df9ae289727beffb9bf273ffc6389bf9fc25e17
+    dependencies: []
+    source:
+      git: https://github.com/Lora-net/SWDR001
+      path: .
+      type: git
+    version: f99fe41538e351c4c0d1975a4138532fe7869d65
   idf:
     source:
       type: idf
     version: 5.5.2
-  stormwater_lr1121:
-    component_hash: 94536657024f45462509709cb611f79bffac5738a4a459fd7c59a275c980ee4b
-    dependencies:
-    - name: idf
-      version: '>=4.1.0'
-    - name: waveshare/esp_lora_1121
-      version: '*'
-    source:
-      git: https://github.com/wrental/elon-stormwater-drone
-      path: shared_components/stormwater_lr1121
-      type: git
-    version: 14f1d9fe32fac3b53e58cbfaa13f6e11e2b42764
-  waveshare/esp_lora_1121:
-    component_hash: 77cc8d6f8c8386838c0ce9ca8e025cebc918ce9ff5eeb3606484f931bf0c0427
-    dependencies:
-    - name: idf
-      require: private
-      version: '>=5.3.0'
-    source:
-      registry_url: https://components.espressif.com/
-      type: service
-    version: 1.0.0
 direct_dependencies:
+- LR11XX_driver
 - idf
-- stormwater_lr1121
-- waveshare/esp_lora_1121
-manifest_hash: 016ece938b88207e08ec187e410eed845acaa6dbbb1f7c5db00ddc3c3803e281
-target: esp32
+manifest_hash: 920594303644bc7910b72204e5ba0595e712f38705734f468a79efb7d2509833
+target: esp32s3
 version: 2.0.0

@@ -6,7 +6,7 @@
  */
 
 /*!
- * @file ctrlr.h
+ * @file stormwater_lr1121.h
  *
  * @brief contains configuration information for stormwater implementation 
  * of Waveshare Core1121-XF module
@@ -34,39 +34,37 @@
 #ifndef STORMWATER_LR1121_H
 #define STORMWATER_LR1121_H
 
-//! If controller, include controller configuration
-#ifdef CTRL_H
-#include "ctrlr.h"
-#endif
+#include <stdbool.h>
+#include <stdint.h>
 
-//! If drone, include drone configuration
-#ifdef DRONE_H
-#include "drone.h"
-#endif
-
-
-/*!
- * @brief LoRa sync/setup parameters and definitions
+// LoRa packet setup:
+/* droneTx >> ctrlrRx:
+ * bytes 0-3: temp
+ * bytes 4-7: D_O2
+ * bytes 8-11: pH
+ *
+ * ctrlrTx >> droneRx:
+ * byte 0: spool position
+ * byte 1: pump on/off
  */
-//! General Parameters:
-#define PACKET_TYPE						LR1121XX_RADIO_PKY_TYPE_LORA
-#define RF_FREQ_IN_HZ					915 * 1000 * 1000	// 915MHz
-#define TX_OUTPUT_POWER_DBM		22	// -9~22
-#define PA_RAMP_TIME					LR11XX_RADIO_RAMP_48_US
-#define FALLBACK_MODE					LR11XX_RADIO_FALLBACK_STDBY_RC
-#define ENABLE_RX_BOOST_MODE	true
+#define HOST_TX_BYTES 12
+#define HOST_RX_BYTES 2
 
-//! Modulation Parameters:
-#define LORA_SPREADING_FACTOR LR11XX_RADIO_LORA_SF7
-#define LORA_BANDWIDTH LR11XX_RADIO_LORA_BW_125
-#define LORA_CODING_RATE LR11XX_RADIO_LORA_CR_4_5
+extern uint8_t rx_buffer[];
+extern uint8_t tx_buffer[];
 
-//! Packet Parameters:
-#define LORA_PREAMBLE_LENGTH 8
-#define LORA_PKT_LEN_MODE LR11XX_RADIO_LORA_PKT_EXPLICIT
-#define LORA_IQ LR11XX_RADIO_LORA_IQ_STANDARD
-#define LORA_CRC LR11XX_RADIO_LORA_CRC_OFF
+void stormwater_lr1121_init(bool is_host);
 
-#define LORA_SYNCWORD 0x12  // 0x12 Private Network, 0x34 Public Network
+bool stormwater_lr1121_interrupt(void);
+
+void stormwater_lr1121_interrupt_response(void);
+
+uint8_t* stormwater_lr1121_read_rx_buffer(void);
+
+void stormwater_lr1121_write_tx_buffer(uint8_t* tx_buffer[]);
+
+void stormwater_lr1121_set_tx(void);
+
+void stormwater_lr1121_set_rx(void);
 
 #endif

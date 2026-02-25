@@ -1,0 +1,20 @@
+idf_component_register(
+	SRCS
+		stormwater_lr1121.c
+		lr11xx_hal.c
+		LR11XX_driver_SWDR001/src/lr11xx_bootloader.c
+		LR11XX_driver_SWDR001/src/lr11xx_crypto_engine.c
+		LR11XX_driver_SWDR001/src/lr11xx_driver_version.c
+		LR11XX_driver_SWDR001/src/lr11xx_gnss.c
+		LR11XX_driver_SWDR001/src/lr11xx_lr_fhss.c
+		LR11XX_driver_SWDR001/src/lr11xx_radio.c
+		LR11XX_driver_SWDR001/src/lr11xx_radio_timings.c
+		LR11XX_driver_SWDR001/src/lr11xx_regmem.c
+		LR11XX_driver_SWDR001/src/lr11xx_rttof.c
+		LR11XX_driver_SWDR001/src/lr11xx_system.c
+		LR11XX_driver_SWDR001/src/lr11xx_wifi.c
+	INCLUDE_DIRS
+		.
+		LR11XX_driver_SWDR001/src/
+		../../main/
+)

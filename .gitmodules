@@ -1,0 +1,3 @@
+[submodule "ctrlr/components/stormwater_lr1121/LR11XX_driver_SWDR001"]
+	path = ctrlr/components/stormwater_lr1121/LR11XX_driver_SWDR001
+	url = https://github.com/Lora-net/SWDR001
