@@ -3,6 +3,14 @@ dependencies:
     source:
       type: idf
     version: 5.5.2
+  stormwater_lr1121:
+    component_hash: 524a9e81377bc77f58786b6e4e1a77c68d3ef806c453c37f2bb38fa03713d525
+    dependencies: []
+    source:
+      git: https://github.com/wrental/elon-stormwater-drone
+      path: shared_components/
+      type: git
+    version: 680a98af05d3acc3f10e7db164464d3ff98c00f9
   waveshare/esp_lora_1121:
     component_hash: 77cc8d6f8c8386838c0ce9ca8e025cebc918ce9ff5eeb3606484f931bf0c0427
     dependencies:
@@ -15,7 +23,8 @@ dependencies:
     version: 1.0.0
 direct_dependencies:
 - idf
+- stormwater_lr1121
 - waveshare/esp_lora_1121
-manifest_hash: af93479ff67b6d8269c501c2dffa50898b7594b64dbfa2863e2857c5d2b70dc2
+manifest_hash: 389b3d55b8791f8ec36e2c470a186229d770a48aed9c3d80fbe75411fb8cc3f6
 target: esp32
 version: 2.0.0
