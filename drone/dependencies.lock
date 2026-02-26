@@ -4,13 +4,13 @@ dependencies:
       type: idf
     version: 5.5.2
   stormwater_lr1121:
-    component_hash: 95010fd58a2ff899efbb94d93a8e0c24f263c50f3f40f85f5ca16419640de77e
+    component_hash: fd08ec2ad5ead09dd392c8cfc79f5fa878c1319498161e60d45a99d830fdb7b5
     dependencies: []
     source:
       git: https://github.com/wrental/elon-stormwater-drone
       path: ctrlr/components/stormwater_lr1121/
       type: git
-    version: 9621056859cf1d49fcde6d5417f5e917e7c9931b
+    version: a08aea740ccf8adda2ccf5bce9b06b86dd5abe8c
 direct_dependencies:
 - idf
 - stormwater_lr1121

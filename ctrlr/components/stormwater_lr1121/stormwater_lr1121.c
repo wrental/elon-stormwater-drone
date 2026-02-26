@@ -241,6 +241,10 @@ void stormwater_lr1121_init(void) {
 
     // Set to RX - if host, will timeout and re-send packet; else will remain in RX
     lr11xx_radio_set_rx(&lr1121, RX_TIMEOUT);
+    
+    uint16_t errors;
+    lr11xx_system_get_errors(&lr1121, &errors);
+    printf("errors: %i\n", errors);
 
 }
 

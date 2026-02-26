@@ -51,15 +51,13 @@ uint8_t rx_buffer[HOST_RX_BYTES];
 uint8_t rx_buffer_length = HOST_RX_BYTES;
 #define TX_TIMEOUT 100 // ms
 #define RX_TIMEOUT 500 // ms
-
 #else
 uint8_t tx_buffer[HOST_RX_BYTES];
 uint8_t tx_buffer_length = HOST_RX_BYTES;
 uint8_t rx_buffer[HOST_TX_BYTES];
 uint8_t rx_buffer_length = HOST_TX_BYTES;
-#define TX_TIMEOUT 100 //ms
-#define RX_TIMEOUT 3000 // continuous
-
+#define TX_TIMEOUT 100 // ms
+#define RX_TIMEOUT 3000 // ms 
 #endif
 
 #define IRQ_MASK ( LR11XX_SYSTEM_IRQ_TX_DONE | LR11XX_SYSTEM_IRQ_RX_DONE | LR11XX_SYSTEM_IRQ_TIMEOUT )
@@ -167,7 +165,6 @@ void lora_init_irq(const void *context, gpio_isr_t handler)
     gpio_install_isr_service(0); // Pass 0 for default ISR flags
 
     // Register the interrupt handler for the specified pin
-//    gpio_isr_handler_add(lr1121.irq, handler, (void*)(&lr1121.irq));
     gpio_isr_handler_add(((lr1121_t *)context)->irq, handler, (void *)((lr1121_t *)context)->irq);
 }
 
@@ -265,8 +262,6 @@ static void on_rx_done(void) {
   lr11xx_radio_get_rx_buffer_status(&lr1121, &buffer_status);
 
   lr11xx_regmem_read_buffer8(&lr1121, rx_buffer, buffer_status.buffer_start_pointer, buffer_status.pld_len_in_bytes);
-
-  lr11xx_radio_set_tx(&lr1121, TX_TIMEOUT);
   
 }
 
