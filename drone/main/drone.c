@@ -27,12 +27,12 @@ void drone_main(void *pvParameters) {
         memcpy(&tx_buffer[0], &temp, 4);
         memcpy(&tx_buffer[4], &d_o2, 4);
         memcpy(&tx_buffer[8], &ph, 4);
-
+#if 0
         for(int i = 0; i < tx_buffer_length; i++) {
             printf("0x%X, ", tx_buffer[i]);
         }
         printf("\n");
-
+#endif
         if(stormwater_lr1121_interrupt()) {
             stormwater_lr1121_interrupt_response();
         }
