@@ -1,11 +1,11 @@
-/*	name: ctrlr.h
+/*	name: stormwater_config.h
  *	date: 02-24-2026
  *	auth: wrental
  *	desc: containts configuration information for controller electronics
  */
 
 /*!
- * @file ctrlr.h
+ * @file stormwater_config.h
  *
  * @brief contains configuration information for stormwater drone controller electronics
  *
@@ -32,6 +32,8 @@
 #ifndef CTRLR_H
 #define CTRLR_H
 
+#define IS_HOST true
+
 /*!
  * @brief controller ESP32 pinout definition
  */
@@ -41,12 +43,12 @@
 #define LED_SPOOL			(GPIO_NUM_4)
 #define LED_PUMP			(GPIO_NUM_5)
 #define LED_DATA			(GPIO_NUM_6)
-#define LR1121_INT		(GPIO_NUM_12)
-#define LR1121_BUSY 	(GPIO_NUM_13)
-#define LR1121_RESET	(GPIO_NUM_14)
-#define LR1121_MISO		(GPIO_NUM_15)
-#define LR1121_MOSI		(GPIO_NUM_16)
-#define LR1121_CLK		(GPIO_NUM_17)
+#define LR1121_INT		    (GPIO_NUM_12)
+#define LR1121_BUSY 	    (GPIO_NUM_13)
+#define LR1121_RESET	    (GPIO_NUM_14)
+#define LR1121_MISO		    (GPIO_NUM_15)
+#define LR1121_MOSI		    (GPIO_NUM_16)
+#define LR1121_CLK		    (GPIO_NUM_17)
 #define LR1121_CS			(GPIO_NUM_18)
 
 /*!

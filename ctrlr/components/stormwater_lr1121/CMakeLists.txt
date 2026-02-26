@@ -17,4 +17,7 @@ idf_component_register(
 		.
 		LR11XX_driver_SWDR001/src/
 		../../main/
+	REQUIRES
+		driver
+		esp_timer
 )

@@ -36,6 +36,8 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "driver/spi_master.h"
+#include "driver/gpio.h"
 
 // LoRa packet setup:
 /* droneTx >> ctrlrRx:
@@ -50,21 +52,29 @@
 #define HOST_TX_BYTES 12
 #define HOST_RX_BYTES 2
 
-extern uint8_t rx_buffer[];
-extern uint8_t tx_buffer[];
+typedef struct lr1121_s {
+	uint8_t cs;
+	uint8_t reset;
+	uint8_t busy;
+	uint8_t irq;
+    spi_device_handle_t spi;
+} lr1121_t;
 
-void stormwater_lr1121_init(bool is_host);
+extern uint8_t rx_buffer[];
+extern uint8_t rx_buffer_length;
+extern uint8_t tx_buffer[];
+extern uint8_t tx_buffer_length;
+extern uint8_t rssi;
+extern lr1121_t lr1121;
+
+void stormwater_lr1121_init(void);
 
 bool stormwater_lr1121_interrupt(void);
 
 void stormwater_lr1121_interrupt_response(void);
 
-uint8_t* stormwater_lr1121_read_rx_buffer(void);
-
-void stormwater_lr1121_write_tx_buffer(uint8_t* tx_buffer[]);
-
-void stormwater_lr1121_set_tx(void);
-
-void stormwater_lr1121_set_rx(void);
+// helper functions for lr11xx_hal.c
+void lora_spi_write_bytes(const void* context,const uint8_t *write,const uint16_t write_length);
+void lora_spi_read_bytes(const void* context, uint8_t *read,const uint16_t read_length);
 
 #endif

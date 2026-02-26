@@ -31,17 +31,7 @@
  *
  */
 
-#include "ctrlr.h"
-/*!
- * @brief global variable initialization
- */
-bool lr1121_irq_flag = false;
-lr1121_t lr1121;
-Rx_Packet rx_packet = {};
-uint8_t rx_buffer[sizeof(rx_packet)];
-Tx_Packet tx_packet = {};
-uint8_t tx_buffer[sizeof(tx_packet)];
-
+#include "stormwater_config.h"
 
 void app_main(void)
 {
