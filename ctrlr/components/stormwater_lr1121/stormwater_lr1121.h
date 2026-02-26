@@ -34,10 +34,11 @@
 #ifndef STORMWATER_LR1121_H
 #define STORMWATER_LR1121_H
 
+#include "stormwater_config.h"
+
 #include <stdbool.h>
 #include <stdint.h>
 #include "driver/spi_master.h"
-#include "driver/gpio.h"
 
 // LoRa packet setup:
 /* droneTx >> ctrlrRx:
@@ -49,6 +50,7 @@
  * byte 0: spool position
  * byte 1: pump on/off
  */
+
 typedef struct host_tx_data_s {
 	uint8_t spool;
 	uint8_t pump;
@@ -60,37 +62,6 @@ typedef struct host_rx_data_s {
 	float ph;
 } host_rx_data_t;
 
-
-// HOST VS CLIENT CHANGES
-#if IS_HOST
-host_tx_data_t tx_data;
-host_rx_data_t rx_data;
-#define TX_BYTES (sizeof(tx_data))
-#define RX_BYTES (sizeof(rx_data))
-
-uint8_t tx_buffer[TX_BYTES];
-uint8_t tx_buffer_length = TX_BYTES;
-uint8_t rx_buffer[RX_BYTES];
-uint8_t rx_buffer_length = RX_BYTES;
-#define TX_TIMEOUT 100 // ms
-#define RX_TIMEOUT 500 // ms
-
-#else // CLIENT
-host_rx_data_t tx_data;
-host_tx_data_t rx_data;
-#define TX_BYTES (sizeof(tx_data))
-#define RX_BYTES (sizeof(rx_data))
-
-uint8_t tx_buffer[TX_BYTES];
-uint8_t tx_buffer_length = TX_BYTES;
-uint8_t rx_buffer[RX_BYTES];
-uint8_t rx_buffer_length = RX_BYTES;
-#define TX_TIMEOUT 100 // ms
-#define RX_TIMEOUT 3000 // ms
-#endif
-
-uint8_t rssi;
-
 typedef struct lr1121_s {
 	uint8_t cs;
 	uint8_t reset;
@@ -99,6 +70,19 @@ typedef struct lr1121_s {
     spi_device_handle_t spi;
 } lr1121_t;
 
+#if IS_HOST
+extern host_tx_data_t tx_data;
+extern host_rx_data_t rx_data;
+#else
+extern host_rx_data_t tx_data;
+extern host_tx_data_t rx_data;
+#endif
+
+extern uint8_t tx_buffer[];
+extern uint8_t tx_buffer_length;
+extern uint8_t rx_buffer[];
+extern uint8_t rx_buffer_length;
+extern uint8_t rssi;
 extern lr1121_t lr1121;
 
 void stormwater_lr1121_init(void);

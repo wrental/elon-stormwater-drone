@@ -31,7 +31,6 @@
  *
  */
 
-#include "stormwater_config.h"
 #include "stormwater_lr1121.h"
 
 #include <stdio.h>
@@ -69,8 +68,8 @@ void ctrlr_main(void *pvParameters) {
         tx_data.pump = 0;
         tx_data.spool = 0;
 
-        memcpy(&rx_data, rx_buffer, RX_BYTES);
-        memcpy(tx_buffer, &tx_data, TX_BYTES);
+        memcpy(&rx_data, rx_buffer, rx_buffer_length);
+        memcpy(tx_buffer, &tx_data, tx_buffer_length);
         
         printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f\n", 
                 rssi, rx_data.temp, rx_data.d_o2, rx_data.ph);
