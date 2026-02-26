@@ -50,15 +50,15 @@ uint8_t tx_buffer_length = HOST_TX_BYTES;
 uint8_t rx_buffer[HOST_RX_BYTES];
 uint8_t rx_buffer_length = HOST_RX_BYTES;
 #define TX_TIMEOUT 100 // ms
-#define RX_TIMEOUT 100 // ms
+#define RX_TIMEOUT 500 // ms
 
 #else
 uint8_t tx_buffer[HOST_RX_BYTES];
 uint8_t tx_buffer_length = HOST_RX_BYTES;
 uint8_t rx_buffer[HOST_TX_BYTES];
 uint8_t rx_buffer_length = HOST_TX_BYTES;
-#define TX_TIMEOUT 500 //ms
-#define RX_TIMEOUT 0xFFFFFF // continuous
+#define TX_TIMEOUT 100 //ms
+#define RX_TIMEOUT 3000 // continuous
 
 #endif
 
@@ -265,6 +265,8 @@ static void on_rx_done(void) {
   lr11xx_radio_get_rx_buffer_status(&lr1121, &buffer_status);
 
   lr11xx_regmem_read_buffer8(&lr1121, rx_buffer, buffer_status.buffer_start_pointer, buffer_status.pld_len_in_bytes);
+
+  lr11xx_radio_set_tx(&lr1121, TX_TIMEOUT);
   
 }
 

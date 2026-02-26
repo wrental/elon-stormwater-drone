@@ -33,8 +33,6 @@
 #define STORMWATER_CONFIG_H
 
 #define IS_HOST true
-#define HOST_TX_BYTES 2
-#define HOST_RX_BYTES 12
 
 // LoRa packet setup:
 /* droneTx >> ctrlrRx:

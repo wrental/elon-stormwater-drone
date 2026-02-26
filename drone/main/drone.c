@@ -28,6 +28,11 @@ void drone_main(void *pvParameters) {
         memcpy(&tx_buffer[4], &d_o2, 4);
         memcpy(&tx_buffer[8], &ph, 4);
 
+        for(int i = 0; i < tx_buffer_length; i++) {
+            printf("0x%X, ", tx_buffer[i]);
+        }
+        printf("\n");
+
         if(stormwater_lr1121_interrupt()) {
             stormwater_lr1121_interrupt_response();
         }
@@ -35,5 +40,5 @@ void drone_main(void *pvParameters) {
 }
 
 void app_main(void) {
-    xTaskCreate(drone_main, "drone_main", 4096, NULL, 2, NULL);
+    xTaskCreate(drone_main, "drone_main", 4096, NULL, 1, NULL);
 }
