@@ -44,19 +44,11 @@ void ctrlr_main(void *pvParameters) {
 
     stormwater_lr1121_init();
 
-    float temp = 0;
-    float d_o2 = 0;
-    float ph = 0;
-
-    memset(rx_buffer, 0, rx_buffer_length);
-    memset(tx_buffer, 0, tx_buffer_length);
-
     for(;;) {
         vTaskDelay(1 / portTICK_PERIOD_MS);
 
         // DEBUG PRINTING TEST
-        // printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f\n", rssi, temp, d_o2, ph);
-#if 0
+       #if 0
         printf("[DEBUG] tx_buffer: ");
         for(int i = 0; i < tx_buffer_length; i++) {
             printf("0x%X, ", tx_buffer[i]);
@@ -71,13 +63,17 @@ void ctrlr_main(void *pvParameters) {
 #endif
 
         if(stormwater_lr1121_interrupt()) {
-            printf("[DEBUG] interrupt!\n");
             stormwater_lr1121_interrupt_response();
         }
 
-        memcpy(&temp, &rx_buffer[0], 4);
-        memcpy(&d_o2, &rx_buffer[4], 4);
-        memcpy(&ph, &rx_buffer[8], 4);
+        tx_data.pump = 0;
+        tx_data.spool = 0;
+
+        memcpy(&rx_data, rx_buffer, RX_BYTES);
+        memcpy(tx_buffer, &tx_data, TX_BYTES);
+        
+        printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f\n", 
+                rssi, rx_data.temp, rx_data.d_o2, rx_data.ph);
     }
 }
 

@@ -266,6 +266,8 @@ static void on_rx_done(void) {
   lr11xx_radio_get_rx_buffer_status(&lr1121, &buffer_status);
 
   lr11xx_regmem_read_buffer8(&lr1121, rx_buffer, buffer_status.buffer_start_pointer, buffer_status.pld_len_in_bytes);
+
+  lr11xx_radio_set_tx(&lr1121, TX_TIMEOUT);
   
 }
 

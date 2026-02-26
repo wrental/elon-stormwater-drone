@@ -29,10 +29,10 @@
  *
  */
 
+#include "stormwater_config.h"
 #include "stormwater_lr1121.h"
 #include "esp_err.h"
 #include "lr11xx_hal.h"
-#include "stormwater_config.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -43,27 +43,7 @@
 #include "lr11xx_regmem.h"
 #include "lr11xx_system.h"
 
-// HOST VS CLIENT CHANGES
-#if IS_HOST
-uint8_t tx_buffer[HOST_TX_BYTES];
-uint8_t tx_buffer_length = HOST_TX_BYTES;
-uint8_t rx_buffer[HOST_RX_BYTES];
-uint8_t rx_buffer_length = HOST_RX_BYTES;
-#define TX_TIMEOUT 100 // ms
-#define RX_TIMEOUT 500 // ms
-#else
-uint8_t tx_buffer[HOST_RX_BYTES];
-uint8_t tx_buffer_length = HOST_RX_BYTES;
-uint8_t rx_buffer[HOST_TX_BYTES];
-uint8_t rx_buffer_length = HOST_TX_BYTES;
-#define TX_TIMEOUT 100 // ms
-#define RX_TIMEOUT 3000 // ms 
-#endif
-
 #define IRQ_MASK ( LR11XX_SYSTEM_IRQ_TX_DONE | LR11XX_SYSTEM_IRQ_RX_DONE | LR11XX_SYSTEM_IRQ_TIMEOUT )
-
-uint8_t rssi;
-
 
 
 // LoRa modulation parameters
@@ -242,10 +222,6 @@ void stormwater_lr1121_init(void) {
     // Set to RX - if host, will timeout and re-send packet; else will remain in RX
     lr11xx_radio_set_rx(&lr1121, RX_TIMEOUT);
     
-    uint16_t errors;
-    lr11xx_system_get_errors(&lr1121, &errors);
-    printf("errors: %i\n", errors);
-
 }
 
 //! check interrupt flag
@@ -286,7 +262,6 @@ void stormwater_lr1121_interrupt_response(void) {
   lr11xx_system_get_and_clear_irq_status(&lr1121, &irq_regs);
 
   irq_regs &= IRQ_MASK;
-  printf("filtered irq: %li\n", irq_regs);
 
   if((irq_regs & LR11XX_SYSTEM_IRQ_TX_DONE) == LR11XX_SYSTEM_IRQ_TX_DONE) {
       on_tx_done();
@@ -297,10 +272,6 @@ void stormwater_lr1121_interrupt_response(void) {
   else if((irq_regs & LR11XX_SYSTEM_IRQ_TIMEOUT) == LR11XX_SYSTEM_IRQ_TIMEOUT) {
       on_rx_timeout();
   }
-  else {
-    uint16_t errors;
-    lr11xx_system_get_errors(&lr1121, &errors);
-    printf("errors: %i\n", errors);
-  }
+
 }
 

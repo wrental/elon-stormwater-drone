@@ -11,32 +11,24 @@ void drone_main(void *pvParameters) {
 
     stormwater_lr1121_init();
 
-    float temp = 0;
-    float d_o2 = 0;
-    float ph = 0;
-
-    memset(rx_buffer, 0, rx_buffer_length);
-    memset(tx_buffer, 0, tx_buffer_length);
-
     for(;;) {
         vTaskDelay(1 / portTICK_PERIOD_MS);
-        temp += 1;
-        d_o2 += 1;
-        ph += 1;
 
-        memcpy(&tx_buffer[0], &temp, 4);
-        memcpy(&tx_buffer[4], &d_o2, 4);
-        memcpy(&tx_buffer[8], &ph, 4);
-#if 0
-        for(int i = 0; i < tx_buffer_length; i++) {
-            printf("0x%X, ", tx_buffer[i]);
-        }
-        printf("\n");
-#endif
         if(stormwater_lr1121_interrupt()) {
             stormwater_lr1121_interrupt_response();
         }
+
+        tx_data.temp++;
+        tx_data.d_o2++;
+        tx_data.ph++;
+
+        memcpy(&rx_data, rx_buffer, RX_BYTES);
+        memcpy(tx_buffer, &tx_data, TX_BYTES);
+
+
     }
+
+    
 }
 
 void app_main(void) {
