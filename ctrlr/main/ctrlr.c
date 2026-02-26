@@ -46,33 +46,28 @@ void ctrlr_main(void *pvParameters) {
     for(;;) {
         vTaskDelay(1 / portTICK_PERIOD_MS);
 
-        // DEBUG PRINTING TEST
-       #if 0
-        printf("[DEBUG] tx_buffer: ");
-        for(int i = 0; i < tx_buffer_length; i++) {
-            printf("0x%X, ", tx_buffer[i]);
-        }
-        printf("\n");
-
-        printf("[DEBUG] rx_buffer: ");
-        for(int i = 0; i < rx_buffer_length; i++) {
-            printf("0x%X, ", rx_buffer[i]);
-        }
-        printf("\n");
-#endif
-
         if(stormwater_lr1121_interrupt()) {
             stormwater_lr1121_interrupt_response();
-        }
-
-        tx_data.pump = 0;
-        tx_data.spool = 0;
-
         memcpy(&rx_data, rx_buffer, rx_buffer_length);
         memcpy(tx_buffer, &tx_data, tx_buffer_length);
+
+        printf("rx_buffer: ");
+        for(int i = 0; i < rx_buffer_length; i++) {
+            printf("0x%X  ", rx_buffer[i]);
+        }
+        printf("\n");
+
+        printf("tx_buffer: ");
+        for(int i = 0; i < tx_buffer_length; i++) {
+            printf("0x%X  ", tx_buffer[i]);
+        }
+        printf("\n");
+
         
         printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f\n", 
                 rssi, rx_data.temp, rx_data.d_o2, rx_data.ph);
+
+        }
     }
 }
 

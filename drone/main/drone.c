@@ -1,4 +1,3 @@
-#include "stormwater_config.h"
 #include "stormwater_lr1121.h"
 
 #include <stdio.h>
@@ -17,14 +16,30 @@ void drone_main(void *pvParameters) {
 
         if(stormwater_lr1121_interrupt()) {
             stormwater_lr1121_interrupt_response();
-        }
 
         tx_data.temp++;
+        printf("%.2f\n", tx_data.temp);
         tx_data.d_o2++;
+        printf("%.2f\n", tx_data.d_o2);
         tx_data.ph++;
+        printf("%.2f\n", tx_data.ph);
 
         memcpy(&rx_data, rx_buffer, rx_buffer_length);
+        printf("rx_buffer: ");
+        for(int i = 0; i < rx_buffer_length; i++) {
+            printf("0x%X  ", rx_buffer[i]);
+        }
+        printf("\n");
+
         memcpy(tx_buffer, &tx_data, tx_buffer_length);
+        printf("tx_buffer: ");
+        for(int i = 0; i < tx_buffer_length; i++) {
+            printf("0x%X  ", tx_buffer[i]);
+        }
+        printf("\n");
+
+       }
+
 
     }
 }
