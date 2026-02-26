@@ -99,6 +99,8 @@ typedef struct lr1121_s {
     spi_device_handle_t spi;
 } lr1121_t;
 
+extern lr1121_t lr1121;
+
 void stormwater_lr1121_init(void);
 
 bool stormwater_lr1121_interrupt(void);
