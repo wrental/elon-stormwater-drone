@@ -30,6 +30,7 @@
  */
 
 #include "stormwater_lr1121.h"
+#include "lr11xx_hal.h"
 #include "stormwater_config.h"
 
 #include <stdio.h>
@@ -198,22 +199,37 @@ void lora_spi_read_bytes(const void* context, uint8_t *read,const uint16_t read_
 //! init spi bus, device; lora module/params; interrupt routine
 void stormwater_lr1121_init(void) {
 
+    // Waveshare esp_lora_1121 copied methods
+    // Used for IO/ISR init, IRQ flag handling
+    lora_init_io(&lr1121);
+    lora_init_irq(&lr1121, isr);
+
 	// SPI Bus and Device Init
     lr1121.spi = stormwater_lr1121_spi_handle;
 	spi_bus_initialize(LR1121_SPI_HOST, &stormwater_lr1121_spi_cfg, SPI_DMA_CH_AUTO);
 	spi_bus_add_device(LR1121_SPI_HOST, &stormwater_lr1121_spi_dev_int_cfg, &stormwater_lr1121_spi_handle);
 
 	// LoRa Module Init
+
+    // LoRa System
+    lr11xx_system_reset(&lr1121);
+    lr11xx_hal_wakeup(&lr1121);
+    lr11xx_system_set_standby(&lr1121, LR11XX_SYSTEM_STANDBY_CFG_RC);
+    lr11xx_system_calibrate_image(&lr1121, 0xE1, 0xE9);
+    lr11xx_system_clear_errors(&lr1121);
+    lr11xx_system_calibrate(&lr1121, 0x3F);
+    lr11xx_system_clear_errors(&lr1121);
+    lr11xx_system_clear_irq_status(&lr1121, LR11XX_SYSTEM_IRQ_ALL_MASK);
+
+    // LoRa Radio Init
 	lr11xx_radio_set_pkt_type(&lr1121, LR11XX_RADIO_PKT_TYPE_LORA);
+    lr11xx_radio_set_rf_freq(&lr1121, 915 * 1000 * 1000); // 915MHz
 	lr11xx_radio_set_lora_mod_params(&lr1121, &lora_mod_params);
 	lr11xx_radio_set_lora_pkt_params(&lr1121, &lora_pkt_params);
+    lr11xx_radio_set_lora_sync_word(&lr1121, 0x12); // 0x12 = private network
 	lr11xx_radio_set_pa_cfg(&lr1121, &lora_pa_params);
 	lr11xx_radio_set_tx_params(&lr1121, 22, LR11XX_RADIO_RAMP_48_US);
-
-    // Waveshare esp_lora_1121 copied methods
-    // Used for ISR init, IRQ flag handling
-    lora_init_io(&lr1121);
-    lora_init_irq(&lr1121, isr);
+    lr11xx_radio_cfg_rx_boosted(&lr1121, 0x01); // enable rx boost
 
     // Set to RX - if host, will timeout and re-send packet; else will remain in RX
     lr11xx_radio_set_rx(&lr1121, RX_TIMEOUT);

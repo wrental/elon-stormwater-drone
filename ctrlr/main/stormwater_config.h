@@ -33,6 +33,20 @@
 #define STORMWATER_CONFIG_H
 
 #define IS_HOST true
+#define HOST_TX_BYTES 2
+#define HOST_RX_BYTES 12
+
+// LoRa packet setup:
+/* droneTx >> ctrlrRx:
+ * bytes 0-3: temp
+ * bytes 4-7: D_O2
+ * bytes 8-11: pH
+ *
+ * ctrlrTx >> droneRx:
+ * byte 0: spool position
+ * byte 1: pump on/off
+ */
+
 
 /*!
  * @brief controller ESP32 pinout definition
