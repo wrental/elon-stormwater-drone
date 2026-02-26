@@ -50,7 +50,7 @@ uint8_t tx_buffer_length = HOST_TX_BYTES;
 uint8_t rx_buffer[HOST_RX_BYTES];
 uint8_t rx_buffer_length = HOST_RX_BYTES;
 #define TX_TIMEOUT 100 // ms
-#define RX_TIMEOUT 100 // ms
+#define RX_TIMEOUT 500 // ms
 
 #else
 uint8_t tx_buffer[HOST_RX_BYTES];
