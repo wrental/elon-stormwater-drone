@@ -49,8 +49,9 @@
  * byte 0: spool position
  * byte 1: pump on/off
  */
-#define HOST_TX_BYTES 12
-#define HOST_RX_BYTES 2
+#define HOST_TX_BYTES 2
+#define HOST_RX_BYTES 12
+
 
 typedef struct lr1121_s {
 	uint8_t cs;
