@@ -8,11 +8,9 @@ docs/
 # drone/
 drone/.cache/
 drone/build/
-drone/managed_components/
 drone/sdkconfig.old
 
 # ctrlr
 ctrlr/.cache/
 ctrlr/build/
-ctrlr/managed_components/
 ctrlr/sdkconfig.old

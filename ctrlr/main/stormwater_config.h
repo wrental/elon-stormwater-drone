@@ -29,8 +29,8 @@
  *
  */
 
-#ifndef CTRLR_H
-#define CTRLR_H
+#ifndef STORMWATER_CONFIG_H
+#define STORMWATER_CONFIG_H
 
 #define IS_HOST true
 
