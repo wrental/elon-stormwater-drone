@@ -42,6 +42,8 @@
 
 #include "stormwater_lr1121.h"
 #include "lr11xx_hal.h"
+
+#include "driver/gpio.h"
 #include "freertos/timers.h"
 #include "esp_timer.h"
 

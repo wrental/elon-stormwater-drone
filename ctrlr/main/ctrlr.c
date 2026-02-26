@@ -76,8 +76,6 @@ void ctrlr_main(void *pvParameters) {
     }
 }
 
-
-
 void app_main(void) {
     xTaskCreate(ctrlr_main, "ctrlr_main", 4096, NULL, 1, NULL);
 }

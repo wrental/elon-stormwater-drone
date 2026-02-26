@@ -29,14 +29,14 @@
  *
  */
 
-#include "stormwater_config.h"
 #include "stormwater_lr1121.h"
-#include "esp_err.h"
-#include "lr11xx_hal.h"
 
 #include <stdio.h>
 #include <string.h>
 
+#include "driver/gpio.h"
+
+#include "lr11xx_hal.h"
 #include "lr11xx_radio.h"
 #include "lr11xx_radio_types.h"
 #include "lr11xx_system_types.h"
@@ -44,6 +44,27 @@
 #include "lr11xx_system.h"
 
 #define IRQ_MASK ( LR11XX_SYSTEM_IRQ_TX_DONE | LR11XX_SYSTEM_IRQ_RX_DONE | LR11XX_SYSTEM_IRQ_TIMEOUT )
+
+// HOST VS CLIENT CHANGES
+#if IS_HOST
+host_tx_data_t tx_data;
+host_rx_data_t rx_data;
+#define TX_TIMEOUT 100 // ms
+#define RX_TIMEOUT 500 // ms
+
+#else // CLIENT
+host_rx_data_t tx_data;
+host_tx_data_t rx_data;
+#define TX_TIMEOUT 100 // ms
+#define RX_TIMEOUT 3000 // ms
+#endif
+
+uint8_t tx_buffer[sizeof(tx_data)];
+uint8_t tx_buffer_length = sizeof(tx_data);
+uint8_t rx_buffer[sizeof(rx_data)];
+uint8_t rx_buffer_length = sizeof(rx_data);
+uint8_t rssi;
+
 
 
 // LoRa modulation parameters
