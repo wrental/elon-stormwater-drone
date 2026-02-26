@@ -66,6 +66,7 @@ void ctrlr_main(void *pvParameters) {
         
         printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f\n", 
                 rssi, rx_data.temp, rx_data.d_o2, rx_data.ph);
+        rssi = 0;
 
         }
     }
