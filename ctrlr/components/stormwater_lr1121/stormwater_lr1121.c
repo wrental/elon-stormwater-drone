@@ -36,12 +36,14 @@
 
 #include "driver/gpio.h"
 
+#include "freertos/idf_additions.h"
 #include "lr11xx_hal.h"
 #include "lr11xx_radio.h"
 #include "lr11xx_radio_types.h"
 #include "lr11xx_system_types.h"
 #include "lr11xx_regmem.h"
 #include "lr11xx_system.h"
+#include "portmacro.h"
 
 #define IRQ_MASK ( LR11XX_SYSTEM_IRQ_TX_DONE | LR11XX_SYSTEM_IRQ_RX_DONE | LR11XX_SYSTEM_IRQ_TIMEOUT )
 
@@ -263,6 +265,8 @@ static void on_rx_done(void) {
   lr11xx_radio_get_rx_buffer_status(&lr1121, &buffer_status);
 
   lr11xx_regmem_read_buffer8(&lr1121, rx_buffer, buffer_status.buffer_start_pointer, buffer_status.pld_len_in_bytes);
+
+  vTaskDelay(1 / portTICK_PERIOD_MS);
 
   lr11xx_regmem_write_buffer8(&lr1121, tx_buffer, tx_buffer_length);
 
