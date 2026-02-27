@@ -259,7 +259,7 @@ void on_error(void) {
     lr11xx_system_irq_mask_t error_irq;
     lr11xx_system_get_status(&lr1121, &status1, &status2, &error_irq);
 
-    printf("%X, %X, %X, %X, %X, %lX\n", status1.command_status, status1.is_interrupt_active, status2.reset_status, status2.chip_mode, status2.is_running_from_flash, error_irq);
+    printf("0x%X, 0x%X, 0x%X, 0x%X, 0x%X, %lX\n", status1.command_status, status1.is_interrupt_active, status2.reset_status, status2.chip_mode, status2.is_running_from_flash, error_irq);
 
     uint16_t errors;
     lr11xx_system_get_errors(&lr1121, &errors);
@@ -277,6 +277,21 @@ static void on_tx_done(void) {
 }
 
 static void on_rx_done(void) {
+
+  lr11xx_radio_rx_buffer_status_t buffer_status;
+  if(lr11xx_radio_get_rx_buffer_status(&lr1121, &buffer_status) != LR11XX_STATUS_OK) {
+    printf("rx buffer status err");
+    on_error();
+  }
+
+  printf("pld_len: %i bytes; buffer size: %i bytes\n", buffer_status.pld_len_in_bytes, rx_buffer_length);
+
+
+  if(lr11xx_regmem_read_buffer8(&lr1121, rx_buffer, buffer_status.buffer_start_pointer, buffer_status.pld_len_in_bytes) != LR11XX_STATUS_OK) {
+    printf("read buffer err");
+    on_error();
+  }
+
   lr11xx_radio_pkt_status_lora_t pkt_status;
 
   if(lr11xx_radio_get_lora_pkt_status(&lr1121, &pkt_status) != LR11XX_STATUS_OK) {
@@ -285,27 +300,12 @@ static void on_rx_done(void) {
   }
 
   rssi = pkt_status.rssi_pkt_in_dbm;
-  
-  lr11xx_radio_rx_buffer_status_t buffer_status;
-  if(lr11xx_radio_get_rx_buffer_status(&lr1121, &buffer_status) != LR11XX_STATUS_OK) {
-    printf("rx buffer status err");
-    on_error();
-  }
-
-
-  if(lr11xx_regmem_read_buffer8(&lr1121, rx_buffer, buffer_status.buffer_start_pointer, buffer_status.pld_len_in_bytes) != LR11XX_STATUS_OK) {
-    printf("read buffer err");
-    on_error();
-  }
-
-
   vTaskDelay(1 / portTICK_PERIOD_MS);
 
   if(lr11xx_regmem_write_buffer8(&lr1121, tx_buffer, tx_buffer_length) != LR11XX_STATUS_OK) {
     printf("write buffer err");
     on_error();
   }
-
 
   if(lr11xx_radio_set_tx(&lr1121, TX_TIMEOUT) != LR11XX_STATUS_OK) {
     printf("set tx err");
@@ -343,7 +343,7 @@ void stormwater_lr1121_interrupt_response(void) {
       on_rx_timeout();
   }
   else {
-      printf("unexpected interrupt\n");
+      // printf("unexpected interrupt\n");
       on_error();
   }
 

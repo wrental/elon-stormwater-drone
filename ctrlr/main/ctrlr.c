@@ -68,6 +68,9 @@ void ctrlr_main(void *pvParameters) {
                 rssi, rx_data.temp, rx_data.d_o2, rx_data.ph);
         rssi = 0;
 
+        tx_data.pump++;
+        tx_data.spool++;
+
         }
     }
 }
