@@ -302,17 +302,20 @@ static void on_rx_done(void) {
   rssi = pkt_status.rssi_pkt_in_dbm;
   vTaskDelay(1 / portTICK_PERIOD_MS);
 
+  if(lr11xx_system_set_standby(&lr1121, LR11XX_SYSTEM_STANDBY_CFG_XOSC) != LR11XX_STATUS_OK) {
+    printf("standby err\n");
+    on_error();
+  }
+
   if(lr11xx_regmem_write_buffer8(&lr1121, tx_buffer, tx_buffer_length) != LR11XX_STATUS_OK) {
     printf("write buffer err");
     on_error();
   }
-
+ 
   if(lr11xx_radio_set_tx(&lr1121, TX_TIMEOUT) != LR11XX_STATUS_OK) {
     printf("set tx err");
     on_error();
-  }
-
-  
+  } 
 }
 
 static void on_rx_timeout(void) {
