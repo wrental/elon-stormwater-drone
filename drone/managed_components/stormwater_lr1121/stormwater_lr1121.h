@@ -51,16 +51,14 @@
  * byte 1: pump on/off
  */
 
-typedef struct host_tx_data_s {
-	uint8_t spool;
-	uint8_t pump;
-} host_tx_data_t;
-
-typedef struct host_rx_data_s {
+typedef struct stormwater_data_packet_s {
 	float temp;
 	float d_o2;
 	float ph;
-} host_rx_data_t;
+	uint8_t spool;
+	uint8_t pump;
+} stormwater_data_packet_t;
+
 
 typedef struct lr1121_s {
 	uint8_t cs;
@@ -70,14 +68,8 @@ typedef struct lr1121_s {
     spi_device_handle_t spi;
 } lr1121_t;
 
-#if IS_HOST
-extern host_tx_data_t tx_data;
-extern host_rx_data_t rx_data;
-#else
-extern host_rx_data_t tx_data;
-extern host_tx_data_t rx_data;
-#endif
-
+extern stormwater_data_packet_t tx_data;
+extern stormwater_data_packet_t rx_data;
 extern uint8_t tx_buffer[];
 extern uint8_t tx_buffer_length;
 extern uint8_t rx_buffer[];

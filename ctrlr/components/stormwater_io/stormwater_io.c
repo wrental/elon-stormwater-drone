@@ -1,15 +1,21 @@
 #include "stormwater_io.h"
-#include "hal/gpio_types.h"
 #include "stormwater_config.h"
 
+#include <stdio.h>
 #include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "esp_timer.h"
 
 stormwater_io_t stormwater_io;
+#define DEBOUNCE_DELAY_US 200000ULL
+static uint64_t last_isr_time = 0;
 
 
 static void IRAM_ATTR button_isr(void* arg) {
+    uint64_t now = esp_timer_get_time();
+    if (now - last_isr_time > DEBOUNCE_DELAY_US) {
+
     if(gpio_get_level(BTN_SPOOL) == 1) {
         if(stormwater_io.spool == 0) {
             stormwater_io.spool = 1;
@@ -38,6 +44,7 @@ static void IRAM_ATTR button_isr(void* arg) {
             stormwater_io.data = 0;
             gpio_set_level(LED_DATA, 0);
         }
+    }
     }
 }
 

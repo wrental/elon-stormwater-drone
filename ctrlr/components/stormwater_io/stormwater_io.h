@@ -1,7 +1,6 @@
 #ifndef STORMWATER_IO_H
 #define STORMWATER_IO_H
 
-#include "stormwater_config.h"
 #include <stdint.h>
  
 typedef struct stormwater_io_s {

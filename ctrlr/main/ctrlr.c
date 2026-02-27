@@ -44,6 +44,7 @@ void ctrlr_main(void *pvParameters) {
 
     stormwater_lr1121_init();
     stormwater_io_init();
+    bool received_packet;
 
     for(;;) {
         vTaskDelay(1 / portTICK_PERIOD_MS);
@@ -52,14 +53,14 @@ void ctrlr_main(void *pvParameters) {
         tx_data.spool = stormwater_io.spool;
 
         if(stormwater_lr1121_interrupt()) {
-            stormwater_lr1121_interrupt_response();
+            received_packet = stormwater_lr1121_interrupt_response();
 
             memcpy(&rx_data, rx_buffer, rx_buffer_length);
             memcpy(tx_buffer, &tx_data, tx_buffer_length);
             
-            if(!stormwater_io.data) {
-                printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f\n", 
-                rssi, rx_data.temp, rx_data.d_o2, rx_data.ph);
+            if(!stormwater_io.data && received_packet) {
+                printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f; SPOOL: %i; PUMP: %i\n", 
+                rssi, rx_data.temp, rx_data.d_o2, rx_data.ph, tx_data.spool, tx_data.pump);
             }
             rssi = 0;
 
