@@ -33,6 +33,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "driver/gpio.h"
 
@@ -48,26 +49,25 @@
 
 #define IRQ_MASK ( LR11XX_SYSTEM_IRQ_TX_DONE | LR11XX_SYSTEM_IRQ_RX_DONE | LR11XX_SYSTEM_IRQ_TIMEOUT )
 
-// HOST VS CLIENT CHANGES
-#if IS_HOST
-host_tx_data_t tx_data;
-host_rx_data_t rx_data;
-#define TX_TIMEOUT 100 // ms
-#define RX_TIMEOUT 500 // ms
-
-#else // CLIENT
-host_rx_data_t tx_data;
-host_tx_data_t rx_data;
-#define TX_TIMEOUT 100 // ms
-#define RX_TIMEOUT 3000 // ms
-#endif
-
 // the fact that you can receive but not send variable packet lengths
 // is the most stupid, nonsensical, moronic bullshit i've heard.
 // furthermore, the fact that the set tx payload length and the 
 // maximum (but variable!) rx payload length are defined by the 
 // same parameter is equally infuriating. 
-#define PAYLOAD_LEN 12 // bytes
+#define PAYLOAD_LEN sizeof(stormwater_data_packet_t) // bytes
+
+// HOST VS CLIENT CHANGES
+#if IS_HOST
+#define TX_TIMEOUT 100 // ms
+#define RX_TIMEOUT 500 // ms
+
+#else // CLIENT
+#define TX_TIMEOUT 100 // ms
+#define RX_TIMEOUT 3000 // ms
+#endif
+
+stormwater_data_packet_t tx_data;
+stormwater_data_packet_t rx_data;
 
 uint8_t tx_buffer[PAYLOAD_LEN];
 uint8_t tx_buffer_length = PAYLOAD_LEN; 
@@ -291,7 +291,7 @@ static void on_rx_done(void) {
     on_error();
   }
 
-  printf("pld_len: %i bytes; buffer size: %i bytes\n", buffer_status.pld_len_in_bytes, rx_buffer_length);
+  // printf("pld_len: %i bytes; buffer size: %i bytes\n", buffer_status.pld_len_in_bytes, rx_buffer_length);
 
 
   if(lr11xx_regmem_read_buffer8(&lr1121, rx_buffer, buffer_status.buffer_start_pointer, buffer_status.pld_len_in_bytes) != LR11XX_STATUS_OK) {
@@ -339,9 +339,9 @@ void stormwater_lr1121_interrupt_response(void) {
   lr11xx_system_irq_mask_t irq_regs;
   lr11xx_system_get_and_clear_irq_status(&lr1121, &irq_regs);
 
-  irq_regs &= LR11XX_SYSTEM_IRQ_ALL_MASK;
+  irq_regs &= IRQ_MASK;
 
-  printf("0x%lX\n", irq_regs);
+  // printf("0x%lX\n", irq_regs);
 
   if((irq_regs & LR11XX_SYSTEM_IRQ_TX_DONE) == LR11XX_SYSTEM_IRQ_TX_DONE) {
       on_tx_done();

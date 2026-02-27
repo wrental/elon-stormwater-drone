@@ -32,6 +32,7 @@
  */
 
 #include "stormwater_lr1121.h"
+#include "stormwater_io.h"
 
 #include <stdio.h>
 #include <stdint.h>
@@ -42,15 +43,27 @@
 void ctrlr_main(void *pvParameters) {
 
     stormwater_lr1121_init();
+    stormwater_io_init();
 
     for(;;) {
         vTaskDelay(1 / portTICK_PERIOD_MS);
 
+        tx_data.pump = stormwater_io.pump;
+        tx_data.spool = stormwater_io.spool;
+
         if(stormwater_lr1121_interrupt()) {
             stormwater_lr1121_interrupt_response();
-        memcpy(&rx_data, rx_buffer, rx_buffer_length);
-        memcpy(tx_buffer, &tx_data, tx_buffer_length);
 
+            memcpy(&rx_data, rx_buffer, rx_buffer_length);
+            memcpy(tx_buffer, &tx_data, tx_buffer_length);
+            
+            if(!stormwater_io.data) {
+                printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f\n", 
+                rssi, rx_data.temp, rx_data.d_o2, rx_data.ph);
+            }
+            rssi = 0;
+
+#if 0
         printf("rx_buffer: ");
         for(int i = 0; i < rx_buffer_length; i++) {
             printf("0x%X  ", rx_buffer[i]);
@@ -62,15 +75,8 @@ void ctrlr_main(void *pvParameters) {
             printf("0x%X  ", tx_buffer[i]);
         }
         printf("\n");
-
+#endif
         
-        printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f\n", 
-                rssi, rx_data.temp, rx_data.d_o2, rx_data.ph);
-        rssi = 0;
-
-        tx_data.pump++;
-        tx_data.spool++;
-
         }
     }
 }

@@ -62,10 +62,17 @@ host_tx_data_t rx_data;
 #define RX_TIMEOUT 3000 // ms
 #endif
 
-uint8_t tx_buffer[sizeof(tx_data)];
-uint8_t tx_buffer_length = sizeof(tx_data);
-uint8_t rx_buffer[sizeof(rx_data)];
-uint8_t rx_buffer_length = sizeof(rx_data);
+// the fact that you can receive but not send variable packet lengths
+// is the most stupid, nonsensical, moronic bullshit i've heard.
+// furthermore, the fact that the set tx payload length and the 
+// maximum (but variable!) rx payload length are defined by the 
+// same parameter is equally infuriating. 
+#define PAYLOAD_LEN 12 // bytes
+
+uint8_t tx_buffer[PAYLOAD_LEN];
+uint8_t tx_buffer_length = PAYLOAD_LEN; 
+uint8_t rx_buffer[PAYLOAD_LEN];
+uint8_t rx_buffer_length = PAYLOAD_LEN;
 uint8_t rssi;
 
 
@@ -82,7 +89,7 @@ static const lr11xx_radio_mod_params_lora_t lora_mod_params = {
 static const lr11xx_radio_pkt_params_lora_t lora_pkt_params = {
   .preamble_len_in_symb = 8,  // min required
   .header_type          = LR11XX_RADIO_LORA_PKT_EXPLICIT,
-  .pld_len_in_bytes     = 12,	// allows variable length packet up to max
+  .pld_len_in_bytes     = PAYLOAD_LEN,  // 0 does NOT allow variable TX - only variable RX.	
   .crc                  = LR11XX_RADIO_LORA_CRC_OFF,
   .iq                   = LR11XX_RADIO_LORA_IQ_STANDARD,
 };
