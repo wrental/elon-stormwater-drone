@@ -82,7 +82,7 @@ static const lr11xx_radio_mod_params_lora_t lora_mod_params = {
 static const lr11xx_radio_pkt_params_lora_t lora_pkt_params = {
   .preamble_len_in_symb = 8,  // min required
   .header_type          = LR11XX_RADIO_LORA_PKT_EXPLICIT,
-  .pld_len_in_bytes     = 0,	// allows variable length packet up to max
+  .pld_len_in_bytes     = 12,	// allows variable length packet up to max
   .crc                  = LR11XX_RADIO_LORA_CRC_OFF,
   .iq                   = LR11XX_RADIO_LORA_IQ_STANDARD,
 };
