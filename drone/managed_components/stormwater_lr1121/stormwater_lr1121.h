@@ -81,7 +81,7 @@ void stormwater_lr1121_init(void);
 
 bool stormwater_lr1121_interrupt(void);
 
-void stormwater_lr1121_interrupt_response(void);
+bool stormwater_lr1121_interrupt_response(void);
 
 // helper functions for lr11xx_hal.c
 void lora_spi_write_bytes(const void* context,const uint8_t *write,const uint16_t write_length);

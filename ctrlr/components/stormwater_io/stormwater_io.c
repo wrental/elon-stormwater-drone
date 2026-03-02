@@ -8,7 +8,7 @@
 #include "esp_timer.h"
 
 stormwater_io_t stormwater_io;
-#define DEBOUNCE_DELAY_US 200000ULL
+#define DEBOUNCE_DELAY_US 1000000ULL
 static uint64_t last_isr_time = 0;
 
 

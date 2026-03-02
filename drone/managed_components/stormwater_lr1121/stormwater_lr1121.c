@@ -334,8 +334,10 @@ static void on_rx_timeout(void) {
   }
 }
 
-void stormwater_lr1121_interrupt_response(void) {
+bool stormwater_lr1121_interrupt_response(void) {
   lora_irq_flag = false;
+  bool received_packet = false;
+
   lr11xx_system_irq_mask_t irq_regs;
   lr11xx_system_get_and_clear_irq_status(&lr1121, &irq_regs);
 
@@ -347,6 +349,7 @@ void stormwater_lr1121_interrupt_response(void) {
       on_tx_done();
   }
   else if((irq_regs & LR11XX_SYSTEM_IRQ_RX_DONE) == LR11XX_SYSTEM_IRQ_RX_DONE) {
+	  received_packet = true;
       on_rx_done();
   }
   else if((irq_regs & LR11XX_SYSTEM_IRQ_TIMEOUT) == LR11XX_SYSTEM_IRQ_TIMEOUT) {
@@ -354,9 +357,10 @@ void stormwater_lr1121_interrupt_response(void) {
   }
   else {
       // printf("unexpected interrupt\n");
-      on_error();
+      // on_error();
   }
 
+  return received_packet;
     
 }
 

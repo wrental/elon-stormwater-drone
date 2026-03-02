@@ -1,0 +1,13 @@
+idf_component_register(
+	SRCS
+		"stormwater_sensors.c"
+	INCLUDE_DIRS
+		"."
+	PRIV_REQUIRES
+		esp-idf-lib__esp_idf_lib_helpers
+		esp-idf-lib__onewire
+		esp_adc
+		esp_timer
+		esp_driver_gpio
+		freertos
+)

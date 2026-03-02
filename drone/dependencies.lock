@@ -1,19 +1,71 @@
 dependencies:
+  esp-idf-lib/esp_idf_lib_helpers:
+    component_hash: 689853bb8993434f9556af0f2816e808bf77b5d22100144b21f3519993daf237
+    dependencies: []
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    targets:
+    - esp32
+    - esp32c2
+    - esp32c3
+    - esp32c5
+    - esp32c6
+    - esp32c61
+    - esp32h2
+    - esp32p4
+    - esp32s2
+    - esp32s3
+    version: 1.4.0
+  esp-idf-lib/onewire:
+    component_hash: d98263e9ab1206caf9bd255652cfd1e7d43524de58a32bc17afe43a425c1674e
+    dependencies:
+    - name: esp-idf-lib/esp_idf_lib_helpers
+      registry_url: https://components.espressif.com
+      require: private
+      version: '*'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    targets:
+    - esp32
+    - esp32c2
+    - esp32c3
+    - esp32c5
+    - esp32c6
+    - esp32c61
+    - esp32h2
+    - esp32p4
+    - esp32s2
+    - esp32s3
+    version: 1.1.0
+  espressif/servo:
+    component_hash: 309c787e48224255fad458cfd9ab86ea53f0fdad1c5e4f6f0c50309990b17108
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=4.4'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 0.1.0
   idf:
     source:
       type: idf
     version: 5.5.2
   stormwater_lr1121:
-    component_hash: 5667babac79f98434aa66a2bbfe1da4a5efca1894be1bb0dacda7af3eb03dad3
+    component_hash: 341c3db0be268ead77142adc88352d64ef787ab58280760d8088a5553a8a24a5
     dependencies: []
     source:
       git: https://github.com/wrental/elon-stormwater-drone
       path: ctrlr/components/stormwater_lr1121/
       type: git
-    version: 33026713c2c3fbd1baa7e19e7067a5ee629fa690
+    version: 2195e85ed48bd37ad4ba64b30dbd42dabb83662e
 direct_dependencies:
+- esp-idf-lib/onewire
+- espressif/servo
 - idf
 - stormwater_lr1121
-manifest_hash: e5016211e686d8f32282ec5530eae69b40d746f4621dee360bbf4534753913eb
+manifest_hash: 40116f7236e288bebee3e8c0e5c696a5c227f7504e6871ce90681899f9e81c85
 target: esp32s3
 version: 2.0.0

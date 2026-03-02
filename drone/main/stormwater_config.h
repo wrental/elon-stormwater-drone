@@ -37,12 +37,15 @@
 /*!
  * @brief controller ESP32 pinout definition
  */
-#define BTN_SPOOL			(GPIO_NUM_1)
-#define BTN_PUMP			(GPIO_NUM_2)
-#define BTN_DATA			(GPIO_NUM_3)
-#define LED_SPOOL			(GPIO_NUM_4)
-#define LED_PUMP			(GPIO_NUM_5)
-#define LED_DATA			(GPIO_NUM_6)
+// 1 - NC
+#define SENS_TEMP           (GPIO_NUM_2)
+#define SENS_D_O2           (GPIO_NUM_3)
+#define SENS_PH             (GPIO_NUM_4)
+#define OUT_PUMP            (GPIO_NUM_5)
+// 6 - NC
+#define OUT_SRV             (GPIO_NUM_7)
+#define IN_SRV              (GPIO_NUM_8)
+// TODO: 9-11 ENC
 #define LR1121_INT		    (GPIO_NUM_12)
 #define LR1121_BUSY 	    (GPIO_NUM_13)
 #define LR1121_RESET	    (GPIO_NUM_14)

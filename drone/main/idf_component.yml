@@ -17,3 +17,5 @@ dependencies:
   stormwater_lr1121:
     git: https://github.com/wrental/elon-stormwater-drone
     path: ctrlr/components/stormwater_lr1121/
+  espressif/servo: '*'
+  esp-idf-lib/onewire: '*'
