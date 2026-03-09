@@ -42,16 +42,20 @@
 
 void ctrlr_main(void *pvParameters) {
 
-    stormwater_lr1121_init();
-    stormwater_io_init();
-    bool received_packet;
+    stormwater_lr1121_init();   // init LoRa
+    stormwater_io_init();   // init buttons
+    bool received_packet;   // check if interrupt is received packet
 
     for(;;) {
-        vTaskDelay(1 / portTICK_PERIOD_MS);
-
+        // vTaskDelay(1 / portTICK_PERIOD_MS);
+        
+        // copy pump/spool button status to tx
+        // TODO: change to intterupt handlers?
         tx_data.pump = stormwater_io.pump;
         tx_data.spool = stormwater_io.spool;
 
+        // check interrupt boolean 
+        // TODO: change to interrupt handler (?)
         if(stormwater_lr1121_interrupt()) {
             received_packet = stormwater_lr1121_interrupt_response();
 
@@ -64,6 +68,8 @@ void ctrlr_main(void *pvParameters) {
             }
             rssi = 0;
 
+// debug testing
+// TODO: implement esp log debugging/verbose
 #if 0
         printf("rx_buffer: ");
         for(int i = 0; i < rx_buffer_length; i++) {
@@ -83,5 +89,6 @@ void ctrlr_main(void *pvParameters) {
 }
 
 void app_main(void) {
+    // literally just start the above loop
     xTaskCreate(ctrlr_main, "ctrlr_main", 4096, NULL, 1, NULL);
 }
