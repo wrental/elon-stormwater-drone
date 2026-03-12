@@ -47,7 +47,7 @@ void ctrlr_main(void *pvParameters) {
     bool received_packet;   // check if interrupt is received packet
 
     for(;;) {
-        // vTaskDelay(1 / portTICK_PERIOD_MS);
+        vTaskDelay(1 / portTICK_PERIOD_MS);
         
         // copy pump/spool button status to tx
         // TODO: change to intterupt handlers?
@@ -64,7 +64,7 @@ void ctrlr_main(void *pvParameters) {
             
             if(!stormwater_io.data && received_packet) {
                 printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f; SPOOL: %i; PUMP: %i\n", 
-                rssi, rx_data.temp, rx_data.d_o2, rx_data.ph, tx_data.spool, tx_data.pump);
+                rssi, rx_data.temp, rx_data.d_o2, rx_data.ph, rx_data.spool, rx_data.pump);
             }
             rssi = 0;
 
