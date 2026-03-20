@@ -50,10 +50,10 @@
  * @brief controller ESP32 pinout definition
  */
 #define BTN_SPOOL			(GPIO_NUM_1)
-#define BTN_PUMP			(GPIO_NUM_2)
-#define BTN_DATA			(GPIO_NUM_3)
-#define LED_SPOOL			(GPIO_NUM_4)
-#define LED_PUMP			(GPIO_NUM_5)
+#define LED_SPOOL			(GPIO_NUM_2)
+#define BTN_PUMP			(GPIO_NUM_3)
+#define LED_PUMP			(GPIO_NUM_4)
+#define BTN_DATA			(GPIO_NUM_5)
 #define LED_DATA			(GPIO_NUM_6)
 #define LR1121_INT		    (GPIO_NUM_12)
 #define LR1121_BUSY 	    (GPIO_NUM_13)

@@ -1,0 +1,11 @@
+idf_component_register(
+    SRCS
+        new_sensors.c
+    INCLUDE_DIRS
+        .
+        ../../main/
+    REQUIRES
+        soc
+        driver
+        onewire
+)

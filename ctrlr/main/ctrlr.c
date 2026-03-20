@@ -31,6 +31,7 @@
  *
  */
 
+#include "stormwater_config.h"
 #include "stormwater_lr1121.h"
 #include "stormwater_io.h"
 
@@ -39,6 +40,7 @@
 #include <string.h>
 
 #include "freertos/task.h"
+#include "driver/gpio.h"
 
 void ctrlr_main(void *pvParameters) {
 
@@ -63,9 +65,14 @@ void ctrlr_main(void *pvParameters) {
             memcpy(tx_buffer, &tx_data, tx_buffer_length);
             
             if(!stormwater_io.data && received_packet) {
-                printf("RSSI: %i; TEMP: %.2f; D_O2: %.2f; PH: %.2f; SPOOL: %i; PUMP: %i\n", 
+                printf("RSSI: %i dB | TEMP: %.2f C | D_O2: %.2f (raw) | PH: %.2f | SPOOL: %i | PUMP: %i\n", 
                 rssi, rx_data.temp, rx_data.d_o2, rx_data.ph, rx_data.spool, rx_data.pump);
+
+                
+                
             }
+            gpio_set_level(LED_PUMP, rx_data.pump);
+            gpio_set_level(LED_SPOOL, rx_data.spool);
             rssi = 0;
 
 // debug testing

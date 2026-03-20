@@ -3,7 +3,7 @@
 #include "hal/gpio_types.h"
 #include "stormwater_config.h"
 #include "stormwater_lr1121.h"
-#include "stormwater_sensors.h"
+#include "new_sensors.h"
 
 #include <stdio.h>
 #include <stdint.h>
@@ -47,10 +47,13 @@ void drone_main(void *pvParameters) {
             }
 
         }
+
         // writing to tx buffer
         // TODO: add actual measurements from sensors
         memcpy(tx_buffer, &tx_data, tx_buffer_length);
-        tx_data.temp = get_temp();
+        tx_data.temp = new_get_temp();
+        tx_data.d_o2 = new_get_d_o2();
+        tx_data.ph = new_get_ph();
     }
 }
 
