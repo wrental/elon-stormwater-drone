@@ -5,7 +5,7 @@ idf_component_register(
         .
         ../../main/
     REQUIRES
-        soc
         driver
+        esp_adc
         onewire
 )

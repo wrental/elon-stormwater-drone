@@ -1,7 +1,12 @@
 #include "new_sensors.h"
-#include "esp_adc/adc_oneshot.h"
 
-static adc_oneshot_unit_handle_t adc_handle = NULL;
+#include "driver/gpio.h"
+#include "esp_adc/adc_oneshot.h"
+#include "hal/adc_types.h"
+#include "soc/adc_channel.h"
+#include "onewire.h"
+
+static adc_oneshot_unit_handle_t adc1_handle;
 
 static float temp_c = 0.0f;
 
@@ -16,16 +21,20 @@ void new_sensors_init(void) {
   // Initialize and configure ADC channels for pH and DO sensors
   adc_oneshot_unit_init_cfg_t init_config = {
     .unit_id = ADC_UNIT_1,
+    .clk_src = ADC_RTC_CLK_SRC_DEFAULT,
+    .ulp_mode = ADC_ULP_MODE_DISABLE
   };
-  adc_oneshot_new_unit(&init_config, &adc_handle);
+
+  adc_oneshot_new_unit(&init_config, &adc1_handle);
 
   adc_oneshot_chan_cfg_t channel_config = {
     .atten = ADC_ATTEN_DB_12,
-    .bitwidth = ADC_BITWIDTH_12,
+    .bitwidth = ADC_BITWIDTH_DEFAULT
   };
 
-  adc_oneshot_config_channel(adc_handle, PH_ADC_CHANNEL, &channel_config);
-  adc_oneshot_config_channel(adc_handle, DO_ADC_CHANNEL, &channel_config);
+  adc_oneshot_config_channel(adc1_handle, PH_ADC_CHANNEL, &channel_config);
+  adc_oneshot_config_channel(adc1_handle, DO_ADC_CHANNEL, &channel_config);
+
 }
 
 float new_get_temp(void) {
@@ -60,8 +69,9 @@ float new_get_temp(void) {
 float new_get_ph(void) {
   int raw = 0;
   float ph = 0;
-  adc_oneshot_read(adc_handle, PH_ADC_CHANNEL, &raw);
-  ph = PH_GAIN * raw + PH_OFFSET;
+  adc_oneshot_read(adc1_handle, PH_ADC_CHANNEL, &raw);
+  float calc_voltage = raw * 3.3f / ADC_RES;
+  ph = PH_GAIN * calc_voltage + PH_OFFSET;
   return ph;
 }
 
@@ -69,7 +79,7 @@ float new_get_d_o2(void) {
   uint16_t V_saturation = (int16_t)((float)temp_c - CAL2_T) * (CAL1_V - CAL2_V) / (CAL1_T - CAL2_T) + CAL2_V;
 
   int d_o2_voltage_raw = 0;
-  adc_oneshot_read(adc_handle, DO_ADC_CHANNEL, &d_o2_voltage_raw);
+  adc_oneshot_read(adc1_handle, DO_ADC_CHANNEL, &d_o2_voltage_raw);
 
   uint16_t d_o2_voltage_calc = (uint32_t)VREF_MV * d_o2_voltage_raw / ADC_RES;
 

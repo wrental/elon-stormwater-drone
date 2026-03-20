@@ -3,29 +3,13 @@
 
 #include "stormwater_config.h"
 
-#include "driver/gpio.h"
-
-#include "onewire.h"
-
-#include "soc/adc_periph.h"
-#include "soc/adc_channel.h"
-#include "hal/adc_hal.h"
-#include "hal/adc_types.h"
-#include "hal/adc_oneshot_hal.h"
-#include "hal/adc_hal_common.h"
-
-#define PH_ADC_CHANNEL      ADC1_GPIO3_CHANNEL   
-#define DO_ADC_CHANNEL      ADC1_GPIO4_CHANNEL   
+#define DO_ADC_CHANNEL      ADC1_GPIO3_CHANNEL
+#define PH_ADC_CHANNEL      ADC1_GPIO4_CHANNEL
 #define TEMP_GPIO           SENS_TEMP
 
 // Calibration constants for pH sensor
 #define PH_OFFSET       -17.125f
 #define PH_GAIN         12.5f
-
-// Sampling and printing intervals
-#define SAMPLING_INTERVAL_MS  20
-#define PRINT_INTERVAL_MS     800
-#define ARRAY_LENGTH    40
 
 // ADC reference voltage and resolution
 #define VREF_MV         5000

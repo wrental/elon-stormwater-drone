@@ -26,6 +26,8 @@ void drone_main(void *pvParameters) {
     gpio_set_direction(SENS_TEMP, GPIO_MODE_INPUT);
     gpio_set_pull_mode(SENS_TEMP, GPIO_PULLUP_ONLY);
 
+    new_sensors_init();
+
 
     for(;;) {
         // check for interrupt boolean
