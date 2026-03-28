@@ -14,8 +14,4 @@ dependencies:
   #   # `public` flag doesn't have an effect dependencies of the `main` component.
   #   # All dependencies of `main` are public by default.
   #   public: true
-  stormwater_lr1121:
-    git: https://github.com/wrental/elon-stormwater-drone
-    path: ctrlr/components/stormwater_lr1121/
-  espressif/servo: '*'
   esp-idf-lib/onewire: '*'

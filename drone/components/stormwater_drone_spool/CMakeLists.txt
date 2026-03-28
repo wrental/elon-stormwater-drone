@@ -1,0 +1,9 @@
+idf_component_register(
+    SRCS
+        stormwater_drone_spool.c
+    INCLUDE_DIRS
+        .
+        ../../main/
+    REQUIRES
+        driver
+)

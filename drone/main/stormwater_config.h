@@ -43,9 +43,14 @@
 #define SENS_PH             (GPIO_NUM_4)
 #define OUT_PUMP            (GPIO_NUM_5)
 // 6 - NC
-#define OUT_SRV             (GPIO_NUM_7)
-#define IN_SRV              (GPIO_NUM_8)
-// TODO: 9-11 ENC
+
+#define SRV_OUT             (GPIO_NUM_7)
+#define SRV_IN              (GPIO_NUM_8)
+
+#define ENC_DAT_B           (GPIO_NUM_9)
+#define ENC_DAT_A           (GPIO_NUM_10)
+#define ENC_DAT_X           (GPIO_NUM_11)
+
 #define LR1121_INT		    (GPIO_NUM_12)
 #define LR1121_BUSY 	    (GPIO_NUM_13)
 #define LR1121_RESET	    (GPIO_NUM_14)

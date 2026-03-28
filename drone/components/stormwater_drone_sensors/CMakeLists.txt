@@ -1,0 +1,11 @@
+idf_component_register(
+    SRCS
+        stormwater_drone_sensors.c
+    INCLUDE_DIRS
+        .
+        ../../main/
+    REQUIRES
+        driver
+        esp_adc
+        onewire
+)

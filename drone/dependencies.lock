@@ -39,33 +39,13 @@ dependencies:
     - esp32s2
     - esp32s3
     version: 1.1.0
-  espressif/servo:
-    component_hash: 309c787e48224255fad458cfd9ab86ea53f0fdad1c5e4f6f0c50309990b17108
-    dependencies:
-    - name: idf
-      require: private
-      version: '>=4.4'
-    source:
-      registry_url: https://components.espressif.com/
-      type: service
-    version: 0.1.0
   idf:
     source:
       type: idf
     version: 5.5.2
-  stormwater_lr1121:
-    component_hash: 341c3db0be268ead77142adc88352d64ef787ab58280760d8088a5553a8a24a5
-    dependencies: []
-    source:
-      git: https://github.com/wrental/elon-stormwater-drone
-      path: ctrlr/components/stormwater_lr1121/
-      type: git
-    version: 2195e85ed48bd37ad4ba64b30dbd42dabb83662e
 direct_dependencies:
 - esp-idf-lib/onewire
-- espressif/servo
 - idf
-- stormwater_lr1121
-manifest_hash: 40116f7236e288bebee3e8c0e5c696a5c227f7504e6871ce90681899f9e81c85
+manifest_hash: ebd39f9258f7cb14d61146afede081809e301fb125ecff4d6d3be490d520636f
 target: esp32s3
 version: 2.0.0

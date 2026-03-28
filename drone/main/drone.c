@@ -3,14 +3,14 @@
 #include "hal/gpio_types.h"
 #include "stormwater_config.h"
 #include "stormwater_lr1121.h"
-#include "new_sensors.h"
+#include "stormwater_drone_sensors.h"
+#include "stormwater_drone_spool.h"
 
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 
 #include "freertos/task.h"
-#include "iot_servo.h"
 
 void drone_main(void *pvParameters) {
 
@@ -26,7 +26,8 @@ void drone_main(void *pvParameters) {
     gpio_set_direction(SENS_TEMP, GPIO_MODE_INPUT);
     gpio_set_pull_mode(SENS_TEMP, GPIO_PULLUP_ONLY);
 
-    new_sensors_init();
+    stormwater_drone_sensors_init();
+    stormwater_drone_spool_init();
 
 
     for(;;) {
@@ -53,9 +54,19 @@ void drone_main(void *pvParameters) {
         // writing to tx buffer
         // TODO: add actual measurements from sensors
         memcpy(tx_buffer, &tx_data, tx_buffer_length);
-        tx_data.temp = new_get_temp();
-        tx_data.d_o2 = new_get_d_o2();
-        tx_data.ph = new_get_ph();
+        tx_data.temp = stormwater_drone_sensors_get_temp();
+        tx_data.d_o2 = stormwater_drone_sensors_get_d_o2();
+        tx_data.ph = stormwater_drone_sensors_get_ph();
+        if(rx_data.spool == 1 && stormwater_drone_spool_get_pos_ticks() < SPOOL_OUT) {
+            stormwater_drone_spool_in();
+        }
+        else if (rx_data.spool == 0 && stormwater_drone_spool_get_pos_ticks() > SPOOL_IN + 100 ) {
+            stormwater_drone_spool_out();
+        }
+        else {
+            stormwater_drone_spool_stop();
+        }
+
     }
 }
 

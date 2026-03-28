@@ -1,0 +1,23 @@
+potential changes:
+
+- carrier pcb for:
+    - esp32 s3 tiny
+    - lr1121
+    - bms (already have ip5306 !! yay!)
+    - header pins/jst connectors for each:
+        - sensors
+        - servo
+        - pump
+        - encoder
+    - SMA connector for SMA >> BNC panel mount
+    - USB-C connector for charging, flashing (passthrough)
+
+- box:
+    - ASA or PETG for waterproofing w/ post
+    - 2x waterproof 8 pin sockets, use cat6 cable
+    - 1x waterproof usb-c socket passthrough
+    - 1x pwr button
+    - 1x BNC antenna
+    - room for 2 batteries (?)
+
+- remove slip ring entirely - just use cable and strain relief or rounded corners
