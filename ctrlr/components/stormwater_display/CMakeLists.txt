@@ -1,0 +1,10 @@
+idf_component_register(
+  SRCS
+    stormwater_display.c
+  INCLUDE_DIRS
+    .
+  REQUIRES
+    esp-idf-lib__esp_idf_lib_helpers
+    esp-idf-lib__pcf8574
+    esp-idf-lib__hd44780
+)

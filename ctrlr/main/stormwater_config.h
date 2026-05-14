@@ -7,7 +7,8 @@
 /*!
  * @file stormwater_config.h
  *
- * @brief contains configuration information for stormwater drone controller electronics
+ * @brief contains configuration information for stormwater drone controller
+ * electronics
  *
  * @copyright
  * Stormwater Drone Controller for Elon University SPEED 2025-2026
@@ -34,39 +35,32 @@
 
 #define IS_HOST true
 
-// LoRa packet setup:
-/* droneTx >> ctrlrRx:
- * bytes 0-3: temp
- * bytes 4-7: D_O2
- * bytes 8-11: pH
- *
- * ctrlrTx >> droneRx:
- * byte 0: spool position
- * byte 1: pump on/off
- */
-
-
 /*!
  * @brief controller ESP32 pinout definition
  */
-#define BTN_SPOOL			(GPIO_NUM_1)
-#define LED_SPOOL			(GPIO_NUM_2)
-#define BTN_PUMP			(GPIO_NUM_3)
-#define LED_PUMP			(GPIO_NUM_4)
-#define BTN_DATA			(GPIO_NUM_5)
-#define LED_DATA			(GPIO_NUM_6)
-#define LR1121_INT		    (GPIO_NUM_12)
-#define LR1121_BUSY 	    (GPIO_NUM_13)
-#define LR1121_RESET	    (GPIO_NUM_14)
-#define LR1121_MISO		    (GPIO_NUM_15)
-#define LR1121_MOSI		    (GPIO_NUM_16)
-#define LR1121_CLK		    (GPIO_NUM_17)
-#define LR1121_CS			(GPIO_NUM_18)
+#define BTN_SPOOL (GPIO_NUM_1)
+#define BTN_PUMP (GPIO_NUM_2)
+#define BTN_DATA (GPIO_NUM_3)
+
+// 4 - NC
+
+#define DISP_SDA (GPIO_NUM_5)
+#define DISP_SCL (GPIO_NUM_6)
+
+// 7-11 NC
+
+#define LR1121_INT (GPIO_NUM_12)
+#define LR1121_BUSY (GPIO_NUM_13)
+#define LR1121_RESET (GPIO_NUM_14)
+#define LR1121_MISO (GPIO_NUM_15)
+#define LR1121_MOSI (GPIO_NUM_16)
+#define LR1121_CLK (GPIO_NUM_17)
+#define LR1121_CS (GPIO_NUM_18)
 
 /*!
  * @brief controller ESP32 SPI configuration for LR1121
  */
-#define LR1121_SPI_HOST		(SPI2_HOST)
-#define LR1121_SPI_CLK_HZ	8 * 1000 * 1000 // 8MHz
+#define LR1121_SPI_HOST (SPI2_HOST)
+#define LR1121_SPI_CLK_HZ 8 * 1000 * 1000 // 8MHz
 
 #endif

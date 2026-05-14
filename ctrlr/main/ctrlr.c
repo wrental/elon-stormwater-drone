@@ -31,71 +31,49 @@
  *
  */
 
-#include "stormwater_config.h"
-#include "stormwater_lr1121.h"
+#include "freertos/idf_additions.h"
 #include "stormwater_io.h"
+#include "stormwater_lr1121.h"
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
-#include "freertos/task.h"
 #include "driver/gpio.h"
+#include "freertos/task.h"
 
 void ctrlr_main(void *pvParameters) {
+  stormwater_lr1121_init(); // init LoRa
+  stormwater_io_init();     // init buttons
+  bool received_packet;     // check if interrupt is received packet
 
-    stormwater_lr1121_init();   // init LoRa
-    stormwater_io_init();   // init buttons
-    bool received_packet;   // check if interrupt is received packet
+  for (;;) {
+    vTaskDelay(1 / portTICK_PERIOD_MS);
 
-    for(;;) {
-        vTaskDelay(1 / portTICK_PERIOD_MS);
-        
-        // copy pump/spool button status to tx
-        // TODO: change to intterupt handlers?
-        tx_data.pump = stormwater_io.pump;
-        tx_data.spool = stormwater_io.spool;
+    // copy pump/spool button status to tx
+    tx_data.pump = stormwater_io.pump;
+    tx_data.spool = stormwater_io.spool;
 
-        // check interrupt boolean 
-        // TODO: change to interrupt handler (?)
-        if(stormwater_lr1121_interrupt()) {
-            received_packet = stormwater_lr1121_interrupt_response();
+    // check interrupt boolean
+    // TODO: change to interrupt handler (?)
+    if (stormwater_lr1121_interrupt()) {
+      received_packet = stormwater_lr1121_interrupt_response();
 
-            memcpy(&rx_data, rx_buffer, rx_buffer_length);
-            memcpy(tx_buffer, &tx_data, tx_buffer_length);
-            
-            if(!stormwater_io.data && received_packet) {
-                printf("RSSI: %i dB | TEMP: %.2f C | D_O2: %.2f (raw) | PH: %.2f | SPOOL: %i | PUMP: %i\n", 
-                rssi, rx_data.temp, rx_data.d_o2, rx_data.ph, rx_data.spool, rx_data.pump);
+      memcpy(&rx_data, rx_buffer, rx_buffer_length);
+      memcpy(tx_buffer, &tx_data, tx_buffer_length);
 
-                
-                
-            }
-            gpio_set_level(LED_PUMP, rx_data.pump);
-            gpio_set_level(LED_SPOOL, rx_data.spool);
-            rssi = 0;
-
-// debug testing
-// TODO: implement esp log debugging/verbose
-#if 0
-        printf("rx_buffer: ");
-        for(int i = 0; i < rx_buffer_length; i++) {
-            printf("0x%X  ", rx_buffer[i]);
-        }
-        printf("\n");
-
-        printf("tx_buffer: ");
-        for(int i = 0; i < tx_buffer_length; i++) {
-            printf("0x%X  ", tx_buffer[i]);
-        }
-        printf("\n");
-#endif
-        
-        }
+      if (!stormwater_io.data && received_packet) {
+        printf("RSSI: %i dB | TEMP: %2.2f C | D_O2: %2.2f (raw) | PH: %1.2f | "
+               "SPOOL: %1i | PUMP: %1i\n",
+               rssi, rx_data.temp, rx_data.d_o2, rx_data.ph, rx_data.spool,
+               rx_data.pump);
+      }
+      rssi = 0;
     }
+  }
 }
 
 void app_main(void) {
-    // literally just start the above loop
-    xTaskCreate(ctrlr_main, "ctrlr_main", 4096, NULL, 1, NULL);
+  // literally just start the above loop
+  xTaskCreatePinnedToCore(ctrlr_main, "ctrlr_main", 4096, NULL, 1, NULL, 1);
 }
